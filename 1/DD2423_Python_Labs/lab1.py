@@ -18,10 +18,10 @@ def display_frequency_properties():
         Fhat[u, v] = 1
         F = np.fft.ifft2(Fhat)
         Fabsmax = np.max(np.abs(F))
-        uc = u if u < sz / 2 else u - sz
+        uc = u if u < sz / 2 else u - sz   #将大于图像尺寸一半的频率坐标平移到中心对称的负频率上，以便居中显示。
         vc = v if v < sz / 2 else v - sz
-        wavelength = sz / np.sqrt(uc**2 + vc**2) if uc != 0 or vc != 0 else 0
-        amplitude = 1.0 / sz
+        wavelength = 1 / np.sqrt(uc**2 + vc**2)
+        amplitude = 1.0 / sz * sz   # Fabsmax == 1
 
         f.add_subplot(6, 5, row * 5 + 1)
         showgrey(Fhat, False)
@@ -50,7 +50,7 @@ def display_images_and_spectra():
     G = F.T
     H = F + 2 * G
 
-    Fhat = np.fft.fft2(F)
+    Fhat = np.fft.fft2(F) # 2D Fourier Transform
     Ghat = np.fft.fft2(G)
     Hhat = np.fft.fft2(H)
 
@@ -75,7 +75,7 @@ def display_images_and_spectra():
     axs[2, 1].imshow(np.log(1 + np.abs(Hhat)), cmap='gray')
     axs[2, 1].set_title("Fourier Spectrum of H")
 
-    axs[0, 2].imshow(np.log(1 + np.abs(np.fft.fftshift(Fhat))), cmap='gray')
+    axs[0, 2].imshow(np.abs(np.fft.fftshift(Fhat)), cmap='gray') # no log
     axs[0, 2].set_title("Centered Fourier Spectrum of F")
 
     axs[1, 2].imshow(np.log(1 + np.abs(np.fft.fftshift(Ghat))), cmap='gray')
@@ -209,7 +209,6 @@ from gaussfft import gaussfft
 
 
 def gauss_test():
-    """执行高斯卷积分析，包括脉冲响应和图像平滑效果展示。"""
 
     # 定义 t 值用于方差和模糊测试
     t_values = {
@@ -380,12 +379,12 @@ def smoothing_and_subsampling():
 # 主函数调用
 if __name__ == "__main__":
     img_path = "Images-npy/phonecalc128.npy"
-    display_frequency_properties()
-    display_images_and_spectra()
-    display_convolution_in_frequency_domain()
-    display_scaled_image_and_spectrum()
-    display_rotated_image_and_spectrum()
-    analyze_fourier_phase_and_magnitude_all(a=1e-3)
-    gauss_test()
-    smoothing()
-    smoothing_and_subsampling()
+    # display_frequency_properties()   # Q1-6
+    # display_images_and_spectra()  # Q7-9
+    # display_convolution_in_frequency_domain()  # Q10
+    # display_scaled_image_and_spectrum()  # Q11
+    # display_rotated_image_and_spectrum()   # Q12
+    # analyze_fourier_phase_and_magnitude_all(a=1e-3) # Q13
+    # gauss_test() # Q14-16
+    # smoothing()  #  Q17-18
+    # smoothing_and_subsampling()
